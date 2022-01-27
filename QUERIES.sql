@@ -87,13 +87,14 @@ number of songs released?
 select extract(year from releasedate) as year
 from songs
 group by year
-having count(extract(year from releasedate)) = (select max(count) as "song count"
-                             from (select count(extract(year from releasedate))
-                             from songs
-                             group by extract(year from releasedate)) as total_p_year);
-
-
-
+having count(extract(year from releasedate)) =
+	(select max(g.number_of_songs)
+	from (select count(title) as number_of_songs
+	from songs
+	group by extract(year from releasedate)
+	) g);
+ 
+ 
 --j)
 /*Write a query that returns the SongId and Title of songs that (a) are released in
 1979, (b) are longer than 3 minutes, and (c) share at least one genre with an album
